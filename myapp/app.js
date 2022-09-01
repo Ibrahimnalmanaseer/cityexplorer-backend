@@ -9,6 +9,7 @@ const URL='http://api.weatherapi.com/v1/forecast.json';
 const KEY='f17b33956c554c1b985234920223008';
 const MOVIE_KEY='ec24eb4a018f6d39a3abb894b537b65c';
 const MOVIE_URL='https://api.themoviedb.org/3/search/movie';
+const displayWeather=require('./modules')
 
 
 
@@ -53,24 +54,24 @@ async function getMovieHandler(req,res){
         
     // return array of movies .
     let lastResult= result.data.results;
-    const allMovies=(Arr)=>{
+    
     const movieArr=[] 
-    Arr.forEach(element => {
-    movieArr.push(new DisplayMovie(element));
-    });
-    return movieArr;
-}
-    res.send(allMovies(lastResult))
-       })
-}
-  
+    lastResult.forEach(value => {
+ 
 
+    movieArr.push({title:value.original_title,
+        overview:value.overview,
+        total:value.vote_count,
+        average:value.vote_average,
+        img:value.poster_path,
+        date:value.release_date});
+    });
    
 
-
-
-
-
+    console.log(movieArr)
+    res.send(movieArr)
+       })
+}
 
 class DisplayWeather{
 
@@ -83,24 +84,7 @@ class DisplayWeather{
 
     }
 
-}
-
-class DisplayMovie{
-
-
-    constructor(value)
-    
-    {
-        this.title=value.original_title;
-        this.overview=value.overview;
-        this.totalvotes=value.vote_count;
-        this.average_votes=value.vote_average;
-        this.image_url=value.poster_path;
-        this.release_date=value.release_date
-    }
-
-}
-
+} 
 
 
 
